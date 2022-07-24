@@ -53,7 +53,7 @@ public class ProducerExchangeServiceV1 implements ProducerExchangeService {
         StreamEndDto dto = new StreamEndDto(
                 data.getTime()
         );
-        restTemplate.put(String.format("http://localhost:8080/api/v1/channel/{channelId}/end", data.getChannelId()), dto);
+        restTemplate.put(String.format("http://localhost:8080/api/v1/channel/%d/end", data.getChannelId()), dto);
         return true;
     }
 }
