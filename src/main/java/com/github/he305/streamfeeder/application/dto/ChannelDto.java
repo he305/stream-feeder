@@ -13,4 +13,5 @@ public class ChannelDto {
     private String nickname;
     private String personFullName;
     private Platform platform;
+    private Boolean isLive;
 }
