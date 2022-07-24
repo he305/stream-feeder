@@ -30,7 +30,7 @@ public class ProducerExchangeServiceV1 implements ProducerExchangeService {
     @Override
     public List<Channel> getChannels() {
         ChannelList channelList = restTemplate.getForObject(
-                "http://localhost:8080/api/v1/channel",
+                "http://127.0.0.1:8080/api/v1/channel",
                 ChannelList.class
         );
         assert channelList != null;
@@ -45,7 +45,7 @@ public class ProducerExchangeServiceV1 implements ProducerExchangeService {
                 data.getViewerCount(),
                 data.getTime()
         );
-        ResponseEntity<StreamResponseDto> response = restTemplate.postForEntity(String.format("http://localhost:8080/api/v1/channel/%d/streamData", data.getChannelId()), dto, StreamResponseDto.class);
+        ResponseEntity<StreamResponseDto> response = restTemplate.postForEntity(String.format("http://127.0.0.1:8080/api/v1/channel/%d/streamData", data.getChannelId()), dto, StreamResponseDto.class);
         HttpStatus code = response.getStatusCode();
         return code == HttpStatus.OK;
     }
@@ -56,7 +56,7 @@ public class ProducerExchangeServiceV1 implements ProducerExchangeService {
                 data.getTime()
         );
 
-        String url = String.format("http://localhost:8080/api/v1/channel/%d/end", data.getChannelId());
+        String url = String.format("http://127.0.0.1:8080/api/v1/channel/%d/end", data.getChannelId());
         HttpEntity<StreamEndDto> request = new HttpEntity<>(dto);
         ResponseEntity<StreamResponseDto> response = restTemplate.exchange(url, HttpMethod.PUT, request, StreamResponseDto.class);
         HttpStatus code = response.getStatusCode();
