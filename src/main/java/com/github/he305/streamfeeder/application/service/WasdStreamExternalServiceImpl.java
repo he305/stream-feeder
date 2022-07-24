@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 @RequiredArgsConstructor
-public class WasdStreamExternalServiceImpl implements WasdStreamExternalService {
+public class WasdStreamExternalServiceImpl extends WasdStreamExternalService {
 
     private final RestTemplate restTemplate;
 
@@ -23,6 +23,7 @@ public class WasdStreamExternalServiceImpl implements WasdStreamExternalService 
     private String wasdToken;
 
     private static final String STREAMER_INFO_URL = "https://wasd.tv/api/v2/broadcasts/public?channel_name=";
+
     @Override
     public StreamExternalData getStreamExternalDataForNickname(String nickname) {
         HttpHeaders headers = new HttpHeaders();

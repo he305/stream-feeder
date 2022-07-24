@@ -1,6 +1,12 @@
 package com.github.he305.streamfeeder.common.service;
 
-import com.github.he305.streamfeeder.common.service.StreamExternalService;
+import com.github.he305.streamfeeder.common.entity.Platform;
 
-public interface TwitchStreamExternalService extends StreamExternalService {
+public abstract class TwitchStreamExternalService implements StreamExternalService {
+    private static final Platform SERVICE_TYPE = Platform.TWITCH;
+
+    @Override
+    public Platform getServiceType() {
+        return SERVICE_TYPE;
+    }
 }

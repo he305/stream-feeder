@@ -15,10 +15,11 @@ import org.springframework.web.client.RestTemplate;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class GoodgameStreamExternalServiceImpl implements GoodgameStreamExternalService {
+public class GoodgameStreamExternalServiceImpl extends GoodgameStreamExternalService {
 
     private final ObjectMapper mapper = new ObjectMapper();
     private final RestTemplate restTemplate;
+
     @SneakyThrows
     @Override
     public StreamExternalData getStreamExternalDataForNickname(String nickname) {

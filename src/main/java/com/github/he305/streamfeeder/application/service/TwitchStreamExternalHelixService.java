@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class TwitchStreamExternalHelixService implements TwitchStreamExternalService {
+public class TwitchStreamExternalHelixService extends TwitchStreamExternalService {
 
     private final TwitchHelix twitchClient;
 
