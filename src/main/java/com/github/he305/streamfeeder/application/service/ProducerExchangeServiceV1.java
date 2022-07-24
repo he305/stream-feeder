@@ -10,6 +10,8 @@ import com.github.he305.streamfeeder.common.entity.Channel;
 import com.github.he305.streamfeeder.common.entity.StreamData;
 import com.github.he305.streamfeeder.common.service.ProducerExchangeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -53,7 +55,11 @@ public class ProducerExchangeServiceV1 implements ProducerExchangeService {
         StreamEndDto dto = new StreamEndDto(
                 data.getTime()
         );
-        restTemplate.put(String.format("http://localhost:8080/api/v1/channel/%d/end", data.getChannelId()), dto);
-        return true;
+
+        String url = String.format("http://localhost:8080/api/v1/channel/%d/end", data.getChannelId());
+        HttpEntity<StreamEndDto> request = new HttpEntity<>(dto);
+        ResponseEntity<StreamResponseDto> response = restTemplate.exchange(url, HttpMethod.PUT, request, StreamResponseDto.class);
+        HttpStatus code = response.getStatusCode();
+        return code == HttpStatus.OK;
     }
 }
