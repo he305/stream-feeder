@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MediaContainerStream {
-    @JsonProperty(value = "stream_current_viewers")
-    private int viewers;
+public class ChannelData {
+    @JsonProperty(value = "channel_id")
+    private int channelId;
+    @JsonProperty(value = "channel_is_live")
+    private boolean isLive;
 }
