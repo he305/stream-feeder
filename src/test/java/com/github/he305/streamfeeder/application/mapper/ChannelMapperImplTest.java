@@ -1,6 +1,7 @@
 package com.github.he305.streamfeeder.application.mapper;
 
 import com.github.he305.streamfeeder.application.dto.ChannelDto;
+import com.github.he305.streamfeeder.application.mapper.exchange.ChannelMapperImpl;
 import com.github.he305.streamfeeder.common.entity.Channel;
 import com.github.he305.streamfeeder.common.entity.Platform;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,13 +9,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ChannelMapperTest {
+class ChannelMapperImplTest {
 
-    private ChannelMapper underTest;
+    private ChannelMapperImpl underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new ChannelMapper();
+        underTest = new ChannelMapperImpl();
     }
 
     @Test
