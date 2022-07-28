@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 public class ObjectMapperConfiguration {
     @Bean
     public ObjectMapper getObjectMapper() {
-        return new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.findAndRegisterModules();
+        return mapper;
     }
 }
