@@ -23,7 +23,7 @@ public class StreamExternalServiceFactoryImpl implements StreamExternalServiceFa
     }
 
     @Override
-    public StreamExternalService getStreamExternalService(Platform platform) {
+    public StreamExternalService getStreamExternalService(Platform platform) throws UnsupportedOperationException {
         StreamExternalService service = serviceMap.get(platform);
         if (service == null) throw new UnsupportedOperationException();
         return service;
