@@ -1,12 +1,12 @@
 package com.github.he305.streamfeeder.common.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Builder
+@EqualsAndHashCode
 public class StreamExternalData {
     private String gameName;
     private String title;
