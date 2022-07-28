@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class ChannelDto {
     private Long id;
     private String nickname;
-    private String personFullName;
     private Platform platform;
     private Boolean isLive;
+    private Long personId;
 }
