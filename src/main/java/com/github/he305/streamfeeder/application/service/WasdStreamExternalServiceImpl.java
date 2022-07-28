@@ -29,7 +29,7 @@ public class WasdStreamExternalServiceImpl extends WasdStreamExternalService {
     private final HttpHeaders headers = new HttpHeaders();
 
     private static final String STREAMER_INFO_URL = "https://wasd.tv/api/v2/broadcasts/public?channel_name=";
-    @Value("${wasd-token}")
+    @Value("${wasd-token:default}")
     private String wasdToken;
 
     @PostConstruct
