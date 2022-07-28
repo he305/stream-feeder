@@ -1,3 +1,9 @@
 spring:
   config:
     import: optional:file:.env[.properties]
+
+producer-api:
+  v1: http://127.0.0.1:8080
+
+scheduler:
+  delay: 60000

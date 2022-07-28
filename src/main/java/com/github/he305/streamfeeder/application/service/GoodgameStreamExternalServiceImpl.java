@@ -1,15 +1,18 @@
 package com.github.he305.streamfeeder.application.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.he305.streamfeeder.application.dto.goodgame.Channel;
+import com.github.he305.streamfeeder.application.mapper.goodgame.GoodgameStreamExternalDataMapper;
+import com.github.he305.streamfeeder.application.mapper.goodgame.JsonChannelMapper;
 import com.github.he305.streamfeeder.common.entity.StreamExternalData;
+import com.github.he305.streamfeeder.common.exception.StreamExternalServiceException;
+import com.github.he305.streamfeeder.common.exception.StreamExternalServiceMappingException;
 import com.github.he305.streamfeeder.common.service.GoodgameStreamExternalService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Component
@@ -17,32 +20,30 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class GoodgameStreamExternalServiceImpl extends GoodgameStreamExternalService {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private static final String GET_CHANNEL_STATUS_URL = "http://goodgame.ru/api/getchannelstatus?fmt=json&id=";
+    private final JsonChannelMapper jsonChannelMapper;
+    private final GoodgameStreamExternalDataMapper goodgameStreamExternalDataMapper;
     private final RestTemplate restTemplate;
 
-    @SneakyThrows
     @Override
-    public StreamExternalData getStreamExternalDataForNickname(String nickname) {
-        ResponseEntity<String> response = restTemplate.getForEntity("http://goodgame.ru/api/getchannelstatus?fmt=json&id=" + nickname, String.class);
-
-        String rawJson = response.getBody();
-
-        JsonNode jsonNode = mapper.readTree(rawJson);
-        String root = jsonNode.fieldNames().next();
-        Channel result = mapper.treeToValue(jsonNode.get(root), Channel.class);
-
-        return buildFromChannel(result);
-    }
-
-    private StreamExternalData buildFromChannel(Channel channel) {
-        if (channel.status.equals("Dead")) {
-            return StreamExternalData.emptyData();
+    public StreamExternalData getStreamExternalDataForNickname(String nickname) throws StreamExternalServiceException {
+        ResponseEntity<String> response;
+        try {
+            response = restTemplate.getForEntity(GET_CHANNEL_STATUS_URL + nickname, String.class);
+        } catch (HttpClientErrorException ex) {
+            throw new StreamExternalServiceException("HTTP status: 4xx: " + ex.getMessage());
+        } catch (HttpServerErrorException ex) {
+            throw new StreamExternalServiceException("HTTP status: 5xx: " + ex.getMessage());
         }
 
-        return buildStreamExternalDataFromChannel(channel);
-    }
+        String rawJson = response.getBody();
+        Channel channel;
+        try {
+            channel = jsonChannelMapper.getChannel(rawJson);
+        } catch (StreamExternalServiceMappingException ex) {
+            throw new StreamExternalServiceException("Couldn't process raw json, ex: " + ex.getMessage());
+        }
 
-    private StreamExternalData buildStreamExternalDataFromChannel(Channel channel) {
-        return StreamExternalData.newData(channel.games, channel.title, Integer.parseInt(channel.viewers));
+        return goodgameStreamExternalDataMapper.getData(channel);
     }
 }

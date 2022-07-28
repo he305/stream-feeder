@@ -1,30 +1,39 @@
 package com.github.he305.streamfeeder.application.dto.wasd;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@JsonRootName(value = "result")
 public class Channel {
-    public Date created_at;
-    public Object deleted_at;
-    public Date updated_at;
-    public int channel_id;
-    public String channel_name;
-    public int user_id;
-    public int followers_count;
-    public int channel_subscribers_count;
-    public boolean channel_is_live;
-    public String channel_description;
-    public boolean channel_description_enabled;
-    public String channel_donation_url;
-    public ChannelImage channel_image;
-    public String channel_status;
-    public boolean channel_subscription_seller;
-    public int channel_clips_count;
-    public Object channel_alias;
-    public int channel_priority;
-    public Date last_activity_date;
-    public Meta meta;
-    public ChannelOwner channel_owner;
-    public boolean notification;
-    public boolean is_user_follower;
-    public boolean is_partner;
+    @JsonProperty(value = "channel")
+    private ChannelData channelData;
+    @JsonProperty(value = "media_container")
+    private MediaContainer container;
+
+    public boolean isLive() {
+        return channelData.isLive();
+    }
+
+    public String getGame() {
+        return container.getGame().getName();
+    }
+
+    public String getTitle() {
+        return container.getName();
+    }
+
+    public int getViewers() {
+        if (container.getStreams().isEmpty())
+            return 0;
+
+        return container.getStreams().get(0).getViewers();
+    }
 }
