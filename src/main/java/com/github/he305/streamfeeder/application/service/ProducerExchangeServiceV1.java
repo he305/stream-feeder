@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public class ProducerExchangeServiceV1 implements ProducerExchangeService {
         ChannelList channelList;
         try {
             channelList = restTemplate.getForObject(url, ChannelList.class);
-        } catch (HttpClientErrorException | HttpServerErrorException ex) {
+        } catch (ResourceAccessException | HttpClientErrorException | HttpServerErrorException ex) {
             throw new ProducerExchangeNetworkException(ex.getMessage());
         }
 
@@ -65,7 +66,7 @@ public class ProducerExchangeServiceV1 implements ProducerExchangeService {
         ResponseEntity<StreamResponseDto> response;
         try {
             response = restTemplate.postForEntity(url, dto, StreamResponseDto.class);
-        } catch (HttpClientErrorException | HttpServerErrorException ex) {
+        } catch (ResourceAccessException | HttpClientErrorException | HttpServerErrorException ex) {
             throw new ProducerExchangeNetworkException(ex.getMessage());
         }
 
@@ -84,7 +85,7 @@ public class ProducerExchangeServiceV1 implements ProducerExchangeService {
         ResponseEntity<StreamResponseDto> response;
         try {
             response = restTemplate.exchange(url, HttpMethod.PUT, request, StreamResponseDto.class);
-        } catch (HttpClientErrorException | HttpServerErrorException ex) {
+        } catch (ResourceAccessException | HttpClientErrorException | HttpServerErrorException ex) {
             throw new ProducerExchangeNetworkException(ex.getMessage());
         }
 
