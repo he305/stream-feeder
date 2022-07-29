@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,6 +46,14 @@ class GoodgameStreamExternalServiceImplTest {
     @Test
     void getStreamExternalDataForNickname_throws5xx() {
         Mockito.when(restTemplate.getForEntity(Mockito.anyString(), eq(String.class))).thenThrow(HttpServerErrorException.class);
+
+        assertThrows(StreamExternalServiceException.class, () ->
+                underTest.getStreamExternalDataForNickname(""));
+    }
+
+    @Test
+    void getStreamExternalDataForNickname_throwsResourceAccessException() {
+        Mockito.when(restTemplate.getForEntity(Mockito.anyString(), eq(String.class))).thenThrow(ResourceAccessException.class);
 
         assertThrows(StreamExternalServiceException.class, () ->
                 underTest.getStreamExternalDataForNickname(""));
