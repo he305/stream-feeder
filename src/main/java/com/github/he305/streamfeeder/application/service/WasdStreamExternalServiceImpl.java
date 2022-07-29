@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
@@ -43,12 +44,8 @@ public class WasdStreamExternalServiceImpl extends WasdStreamExternalService {
         ResponseEntity<String> response;
         try {
             response = restTemplate.exchange(STREAMER_INFO_URL + nickname, HttpMethod.GET, requestEntity, String.class);
-        } catch (HttpClientErrorException | HttpServerErrorException ex) {
+        } catch (ResourceAccessException | HttpClientErrorException | HttpServerErrorException ex) {
             throw new StreamExternalServiceException("HTTP error: " + ex.getMessage());
-        }
-
-        if (response.getStatusCode().isError()) {
-            throw new StreamExternalServiceException("Error retrieving wasd data, code: " + response.getStatusCode().value());
         }
 
         String body = response.getBody();

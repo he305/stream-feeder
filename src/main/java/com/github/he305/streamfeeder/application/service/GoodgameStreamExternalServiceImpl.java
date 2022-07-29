@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 @Component
@@ -34,6 +35,8 @@ public class GoodgameStreamExternalServiceImpl extends GoodgameStreamExternalSer
             throw new StreamExternalServiceException("HTTP status: 4xx: " + ex.getMessage());
         } catch (HttpServerErrorException ex) {
             throw new StreamExternalServiceException("HTTP status: 5xx: " + ex.getMessage());
+        } catch (ResourceAccessException ex) {
+            throw new StreamExternalServiceException("HTTP error: " + ex.getMessage());
         }
 
         String rawJson = response.getBody();
