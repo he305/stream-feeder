@@ -4,6 +4,10 @@ spring:
 
 producer-api:
   v1: http://127.0.0.1:8080
+  v2:
+    base_url: http://127.0.0.1:8081
+    username: streamer-feeder
+    password: streamer-feeder-password
 
 scheduler:
   delay: 60000

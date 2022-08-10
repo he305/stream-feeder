@@ -5,14 +5,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 public class Channel {
-    private Long id;
+    private UUID id;
     private String nickname;
     private Boolean isLive;
     private Platform platform;
-    private Long personId;
 }
