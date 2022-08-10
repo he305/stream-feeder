@@ -1,39 +1,39 @@
-package com.github.he305.streamfeeder.application.mapper;
+package com.github.he305.streamfeeder.application.mapper.exchange;
 
-import com.github.he305.streamfeeder.application.dto.ChannelDto;
-import com.github.he305.streamfeeder.application.mapper.exchange.ChannelMapperImpl;
+import com.github.he305.streamfeeder.application.dto.v2.ChannelDtoV2;
 import com.github.he305.streamfeeder.common.entity.Channel;
 import com.github.he305.streamfeeder.common.entity.Platform;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ChannelMapperImplTest {
+class ChannelMapperV2ImplTest {
 
-    private ChannelMapperImpl underTest;
+    ChannelMapperV2Impl underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new ChannelMapperImpl();
+        underTest = new ChannelMapperV2Impl();
     }
 
     @Test
     void toChannel() {
-        ChannelDto dto = new ChannelDto(
-                0L,
-                "nickname",
+        UUID id = UUID.randomUUID();
+        ChannelDtoV2 dto = new ChannelDtoV2(
+                id,
+                "name",
                 Platform.TWITCH,
-                true,
-                1L
+                true
         );
 
         Channel expected = new Channel(
-                0L,
-                "nickname",
+                id,
+                "name",
                 true,
-                Platform.TWITCH,
-                1L
+                Platform.TWITCH
         );
 
         Channel actual = underTest.toChannel(dto);

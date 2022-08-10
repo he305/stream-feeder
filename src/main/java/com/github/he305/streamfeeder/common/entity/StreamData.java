@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -16,5 +17,5 @@ public class StreamData {
     private String title;
     private Integer viewerCount;
     private LocalDateTime time;
-    private Long channelId;
+    private UUID channelId;
 }

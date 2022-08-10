@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -44,7 +45,7 @@ class StreamFeederTaskTest {
 
     @Test
     void doTask_fail_factoryCantCreate() {
-        Channel channel = new Channel(0L, "name", true, Platform.TWITCH, 1L);
+        Channel channel = new Channel(UUID.randomUUID(), "name", true, Platform.TWITCH);
         List<Channel> channels = List.of(
                 channel
         );
@@ -58,7 +59,7 @@ class StreamFeederTaskTest {
 
     @Test
     void doTask_fail_externalServiceError() {
-        Channel channel = new Channel(0L, "name", true, Platform.TWITCH, 1L);
+        Channel channel = new Channel(UUID.randomUUID(), "name", true, Platform.TWITCH);
         List<Channel> channels = List.of(
                 channel
         );
@@ -74,7 +75,7 @@ class StreamFeederTaskTest {
 
     @Test
     void doTask_fail_addStreamData_Exception() {
-        Channel channel = new Channel(0L, "name", true, Platform.TWITCH, 1L);
+        Channel channel = new Channel(UUID.randomUUID(), "name", true, Platform.TWITCH);
         List<Channel> channels = List.of(
                 channel
         );
@@ -92,7 +93,7 @@ class StreamFeederTaskTest {
 
     @Test
     void doTask_fail_addStreamData_ErrorCode() {
-        Channel channel = new Channel(0L, "name", true, Platform.TWITCH, 1L);
+        Channel channel = new Channel(UUID.randomUUID(), "name", true, Platform.TWITCH);
         List<Channel> channels = List.of(
                 channel
         );
@@ -110,7 +111,7 @@ class StreamFeederTaskTest {
 
     @Test
     void doTask_fail_endStreamIfLive_Exception() {
-        Channel channel = new Channel(0L, "name", true, Platform.TWITCH, 1L);
+        Channel channel = new Channel(UUID.randomUUID(), "name", true, Platform.TWITCH);
         List<Channel> channels = List.of(
                 channel
         );
@@ -128,7 +129,7 @@ class StreamFeederTaskTest {
 
     @Test
     void doTask_fail_endStreamIfLive_ErrorCode() {
-        Channel channel = new Channel(0L, "name", true, Platform.TWITCH, 1L);
+        Channel channel = new Channel(UUID.randomUUID(), "name", true, Platform.TWITCH);
         List<Channel> channels = List.of(
                 channel
         );
@@ -146,7 +147,7 @@ class StreamFeederTaskTest {
 
     @Test
     void doTask_success_addStreamData() {
-        Channel channel = new Channel(0L, "name", true, Platform.TWITCH, 1L);
+        Channel channel = new Channel(UUID.randomUUID(), "name", true, Platform.TWITCH);
         List<Channel> channels = List.of(
                 channel
         );
@@ -164,7 +165,7 @@ class StreamFeederTaskTest {
 
     @Test
     void doTask_success_endStreamIfLive_ChannelOffline() {
-        Channel channel = new Channel(0L, "name", false, Platform.TWITCH, 1L);
+        Channel channel = new Channel(UUID.randomUUID(), "name", false, Platform.TWITCH);
         List<Channel> channels = List.of(
                 channel
         );
@@ -181,7 +182,7 @@ class StreamFeederTaskTest {
 
     @Test
     void doTask_success_endStreamIfLive_endStream() {
-        Channel channel = new Channel(0L, "name", true, Platform.TWITCH, 1L);
+        Channel channel = new Channel(UUID.randomUUID(), "name", true, Platform.TWITCH);
         List<Channel> channels = List.of(
                 channel
         );
