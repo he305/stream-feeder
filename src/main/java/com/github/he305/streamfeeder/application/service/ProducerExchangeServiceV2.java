@@ -19,7 +19,6 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,7 +65,7 @@ public class ProducerExchangeServiceV2 implements ProducerExchangeService {
                 data.getGameName(),
                 data.getTitle(),
                 data.getViewerCount(),
-                data.getTime().minus(3, ChronoUnit.HOURS)
+                data.getTime()
         );
 
         HttpEntity<StreamDataDtoV2> entity = new HttpEntity<>(streamDataDtoV2, headers);
@@ -89,7 +88,7 @@ public class ProducerExchangeServiceV2 implements ProducerExchangeService {
 
         StreamEndDtoV2 streamEndDtoV2 = new StreamEndDtoV2(
                 request.getChannelId(),
-                request.getTime().minus(3, ChronoUnit.HOURS)
+                request.getTime()
         );
 
         HttpEntity<StreamEndDtoV2> entity = new HttpEntity<>(streamEndDtoV2, headers);

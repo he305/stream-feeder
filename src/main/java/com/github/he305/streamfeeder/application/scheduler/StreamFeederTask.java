@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Service
@@ -66,7 +67,7 @@ public class StreamFeederTask implements Task {
                 data.getGameName(),
                 data.getTitle(),
                 data.getViewerCount(),
-                LocalDateTime.now(),
+                LocalDateTime.now(ZoneOffset.UTC),
                 channel.getId()
         );
         try {
@@ -84,7 +85,7 @@ public class StreamFeederTask implements Task {
             return true;
         }
 
-        StreamEnd endRequest = new StreamEnd(LocalDateTime.now(), channel.getId());
+        StreamEnd endRequest = new StreamEnd(LocalDateTime.now(ZoneOffset.UTC), channel.getId());
         try {
             boolean hasSent = service.endStream(endRequest);
             log.info("Sent end? " + hasSent);
