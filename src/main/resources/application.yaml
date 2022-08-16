@@ -8,6 +8,7 @@ producer-api:
     base_url: http://127.0.0.1:8081
     username: streamer-feeder
     password: streamer-feeder-password
+    service-register-key: exampleserviceregisterkey
 
 scheduler:
   delay: 60000
