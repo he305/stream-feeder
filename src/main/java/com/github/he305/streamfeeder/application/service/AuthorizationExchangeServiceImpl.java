@@ -5,6 +5,7 @@ import com.github.he305.streamfeeder.application.dto.v2.JwtResponseDto;
 import com.github.he305.streamfeeder.application.dto.v2.LoginRequestDto;
 import com.github.he305.streamfeeder.application.dto.v2.RegisterServiceRequestDto;
 import com.github.he305.streamfeeder.common.exception.ProducerExchangeNetworkException;
+import com.github.he305.streamfeeder.common.exception.ProducerExchangeNetworkNullResponseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -51,7 +52,10 @@ public class AuthorizationExchangeServiceImpl implements AuthorizationExchangeSe
             return registerService();
         }
 
-        assert response != null;
+        if (response == null) {
+            throw new ProducerExchangeNetworkNullResponseException(url);
+        }
+
         refreshToken = response.getRefreshToken();
         return response.getToken();
     }
@@ -71,7 +75,10 @@ public class AuthorizationExchangeServiceImpl implements AuthorizationExchangeSe
             throw new ProducerExchangeNetworkException(ex.getMessage());
         }
 
-        assert response != null;
+        if (response == null) {
+            throw new ProducerExchangeNetworkNullResponseException(url);
+        }
+
         refreshToken = response.getRefreshToken();
         return response.getToken();
     }
@@ -89,7 +96,10 @@ public class AuthorizationExchangeServiceImpl implements AuthorizationExchangeSe
             return getAccessTokenByLogin();
         }
 
-        assert response != null;
+        if (response == null) {
+            throw new ProducerExchangeNetworkNullResponseException(url);
+        }
+
         refreshToken = response.getRefreshToken();
         return response.getToken();
     }

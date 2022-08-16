@@ -2,6 +2,7 @@ package com.github.he305.streamfeeder.application.service;
 
 import com.github.he305.streamfeeder.application.dto.v2.JwtResponseDto;
 import com.github.he305.streamfeeder.common.exception.ProducerExchangeNetworkException;
+import com.github.he305.streamfeeder.common.exception.ProducerExchangeNetworkNullResponseException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -38,8 +39,18 @@ class AuthorizationExchangeServiceImplTest {
     @Test
     void getAuthHeaders_getAccessTokenByLogin_restTemplateException() {
         prepareValues();
-        Mockito.when(restTemplate.postForObject(Mockito.anyString(), Mockito.any(), Mockito.any())).thenThrow(ResourceAccessException.class);
+        String loginUrl = "test/api/auth/login";
+        Mockito.when(restTemplate.postForObject(eq(loginUrl), Mockito.any(), Mockito.any())).thenThrow(ResourceAccessException.class);
         assertThrows(ProducerExchangeNetworkException.class, () ->
+                underTest.getAuthHeaders());
+    }
+
+    @Test
+    void getAuthHeaders_getAccessTokenByLogin_responseNull() {
+        prepareValues();
+        String loginUrl = "test/api/auth/login";
+        Mockito.when(restTemplate.postForObject(eq(loginUrl), Mockito.any(), Mockito.any())).thenReturn(null);
+        assertThrows(ProducerExchangeNetworkNullResponseException.class, () ->
                 underTest.getAuthHeaders());
     }
 
@@ -52,6 +63,18 @@ class AuthorizationExchangeServiceImplTest {
         Mockito.when(restTemplate.postForObject(eq(registerServiceUrl), Mockito.any(), Mockito.any())).thenThrow(HttpClientErrorException.class);
 
         assertThrows(ProducerExchangeNetworkException.class, () ->
+                underTest.getAuthHeaders());
+    }
+
+    @Test
+    void getAuthHeaders_getAccessTokenByLogin_loginFail_registerNullResponse() {
+        prepareValues();
+        String loginUrl = "test/api/auth/login";
+        Mockito.when(restTemplate.postForObject(eq(loginUrl), Mockito.any(), Mockito.any())).thenThrow(HttpClientErrorException.class);
+        String registerServiceUrl = "test/api/auth/registerService";
+        Mockito.when(restTemplate.postForObject(eq(registerServiceUrl), Mockito.any(), Mockito.any())).thenReturn(null);
+
+        assertThrows(ProducerExchangeNetworkNullResponseException.class, () ->
                 underTest.getAuthHeaders());
     }
 
@@ -82,7 +105,8 @@ class AuthorizationExchangeServiceImplTest {
 
         JwtResponseDto resultDto = new JwtResponseDto("test", "refresh");
 
-        Mockito.when(restTemplate.postForObject(Mockito.anyString(), Mockito.any(), eq(JwtResponseDto.class))).thenReturn(resultDto);
+        String loginUrl = "test/api/auth/login";
+        Mockito.when(restTemplate.postForObject(eq(loginUrl), Mockito.any(), eq(JwtResponseDto.class))).thenReturn(resultDto);
         HttpHeaders actual = underTest.getAuthHeaders();
         assertEquals(expected, actual);
     }
@@ -104,6 +128,18 @@ class AuthorizationExchangeServiceImplTest {
         Mockito.when(restTemplate.postForObject(eq(loginUrl), Mockito.any(), Mockito.any())).thenReturn(resultDto);
         HttpHeaders actual = underTest.getAuthHeaders();
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void getAuthHeaders_getAccessTokenByRefresh_responseNull() {
+        prepareValues();
+        ReflectionTestUtils.setField(underTest, "refreshToken", "test", String.class);
+
+        String refreshUrl = "test/api/auth/refresh";
+        Mockito.when(restTemplate.postForObject(eq(refreshUrl), Mockito.any(), Mockito.any())).thenReturn(null);
+
+        assertThrows(ProducerExchangeNetworkNullResponseException.class, () ->
+                underTest.getAuthHeaders());
     }
 
     @Test
