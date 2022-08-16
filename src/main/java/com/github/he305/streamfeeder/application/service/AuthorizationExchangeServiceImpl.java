@@ -3,6 +3,7 @@ package com.github.he305.streamfeeder.application.service;
 import com.github.he305.streamfeeder.application.dto.v2.JwtRefreshTokenDto;
 import com.github.he305.streamfeeder.application.dto.v2.JwtResponseDto;
 import com.github.he305.streamfeeder.application.dto.v2.LoginRequestDto;
+import com.github.he305.streamfeeder.application.dto.v2.RegisterServiceRequestDto;
 import com.github.he305.streamfeeder.common.exception.ProducerExchangeNetworkException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +30,9 @@ public class AuthorizationExchangeServiceImpl implements AuthorizationExchangeSe
     @Value("${producer-api.v2.password:default}")
     public String password;
 
+    @Value("${producer-api.v2.service-register-key}")
+    public String serviceRegisterKey;
+
     private String refreshToken;
 
     private String getAccessTokenByLogin() {
@@ -36,6 +40,28 @@ public class AuthorizationExchangeServiceImpl implements AuthorizationExchangeSe
         LoginRequestDto dto = new LoginRequestDto(
                 username,
                 password
+        );
+
+        JwtResponseDto response;
+        try {
+            response = restTemplate.postForObject(url, dto, JwtResponseDto.class);
+        } catch (ResourceAccessException | HttpServerErrorException ex) {
+            throw new ProducerExchangeNetworkException(ex.getMessage());
+        } catch (HttpClientErrorException ex) {
+            return registerService();
+        }
+
+        assert response != null;
+        refreshToken = response.getRefreshToken();
+        return response.getToken();
+    }
+
+    private String registerService() {
+        String url = baseUrl + AUTH_POINT + "/registerService";
+        RegisterServiceRequestDto dto = new RegisterServiceRequestDto(
+                username,
+                password,
+                serviceRegisterKey
         );
 
         JwtResponseDto response;

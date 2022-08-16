@@ -32,6 +32,7 @@ class AuthorizationExchangeServiceImplTest {
         ReflectionTestUtils.setField(underTest, "baseUrl", "test", String.class);
         ReflectionTestUtils.setField(underTest, "username", "test", String.class);
         ReflectionTestUtils.setField(underTest, "password", "test", String.class);
+        ReflectionTestUtils.setField(underTest, "serviceRegisterKey", "test", String.class);
     }
 
     @Test
@@ -40,6 +41,36 @@ class AuthorizationExchangeServiceImplTest {
         Mockito.when(restTemplate.postForObject(Mockito.anyString(), Mockito.any(), Mockito.any())).thenThrow(ResourceAccessException.class);
         assertThrows(ProducerExchangeNetworkException.class, () ->
                 underTest.getAuthHeaders());
+    }
+
+    @Test
+    void getAuthHeaders_getAccessTokenByLogin_loginFail_registerFail() {
+        prepareValues();
+        String loginUrl = "test/api/auth/login";
+        Mockito.when(restTemplate.postForObject(eq(loginUrl), Mockito.any(), Mockito.any())).thenThrow(HttpClientErrorException.class);
+        String registerServiceUrl = "test/api/auth/registerService";
+        Mockito.when(restTemplate.postForObject(eq(registerServiceUrl), Mockito.any(), Mockito.any())).thenThrow(HttpClientErrorException.class);
+
+        assertThrows(ProducerExchangeNetworkException.class, () ->
+                underTest.getAuthHeaders());
+    }
+
+    @Test
+    void getAuthHeaders_getAccessTokenByLogin_loginFail_registerSuccess() {
+        prepareValues();
+        HttpHeaders expected = new HttpHeaders();
+        expected.setContentType(MediaType.APPLICATION_JSON);
+        expected.set("Authorization", "Bearer test");
+
+        String loginUrl = "test/api/auth/login";
+        Mockito.when(restTemplate.postForObject(eq(loginUrl), Mockito.any(), Mockito.any())).thenThrow(HttpClientErrorException.class);
+        String registerServiceUrl = "test/api/auth/registerService";
+
+        JwtResponseDto resultDto = new JwtResponseDto("test", "refresh");
+        Mockito.when(restTemplate.postForObject(eq(registerServiceUrl), Mockito.any(), Mockito.any())).thenReturn(resultDto);
+
+        HttpHeaders actual = underTest.getAuthHeaders();
+        assertEquals(expected, actual);
     }
 
     @Test
