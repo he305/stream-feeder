@@ -20,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class AuthorizationExchangeServiceImpl implements AuthorizationExchangeService {
 
-    public static final String AUTH_POINT = "/api/auth";
+    public static final String AUTH_POINT = "/auth";
     private final RestTemplate restTemplate;
     @Value("${producer-api.v2.base_url:default}")
     public String baseUrl;
@@ -61,7 +61,7 @@ public class AuthorizationExchangeServiceImpl implements AuthorizationExchangeSe
     }
 
     private String registerService() {
-        String url = baseUrl + AUTH_POINT + "/registerService";
+        String url = baseUrl + AUTH_POINT + "/register-service";
         RegisterServiceRequestDto dto = new RegisterServiceRequestDto(
                 username,
                 password,
