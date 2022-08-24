@@ -12,9 +12,10 @@ public class YoutubeParserUtilsImpl implements YoutubeParserUtils {
 
     private static final Pattern streamStatusPattern = Pattern.compile("\\{\"status\":\"(.*?)\",");
     private static final Pattern titlePattern = Pattern.compile("\\{\"contents\":\\[\\{\"videoPrimaryInfoRenderer\":\\{\"title\":\\{\"runs\":\\[\\{\"text\":\"(.*?)\"}");
-    private static final Pattern categoryPattern = Pattern.compile("},\"title\":\\{\"simpleText\":\"(.*?)\"},\"subtitle\":\\{\"");
+    private static final Pattern categoryPattern = Pattern.compile("},\"title\":\\{\"simpleText\":\"(.*?)\"},\"subtitle\":\\{\"simpleText\"");
     private static final Pattern viewerPattern = Pattern.compile("\"viewCount\":\\{\"videoViewCountRenderer\":\\{\"viewCount\":\\{\"runs\":\\[\\{\"text\":\".*\"},\\{\"text\":\"(.*?)\"}]},\"isLive\":true}}");
     private static final String STREAM_IS_LIVE_STRING = "OK";
+    private static final String NOT_SET_CATEGORY = "Not set";
 
     @Override
     public boolean getIsLive(String htmlBody) {
@@ -40,7 +41,7 @@ public class YoutubeParserUtilsImpl implements YoutubeParserUtils {
         if (matcher.find()) {
             return matcher.group(1);
         }
-        throw new YoutubeUtilParsingException("Category not found");
+        return NOT_SET_CATEGORY;
     }
 
     @Override

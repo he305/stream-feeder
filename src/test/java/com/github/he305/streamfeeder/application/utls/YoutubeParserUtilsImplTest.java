@@ -59,7 +59,7 @@ class YoutubeParserUtilsImplTest {
     }
 
     @Test
-    void getTitle_parsingError() {
+    void getTitle_parsingError_returnNotSet() {
         String errorString = "asdada";
         assertThrows(YoutubeUtilParsingException.class, () ->
                 underTest.getTitle(errorString));
@@ -77,8 +77,9 @@ class YoutubeParserUtilsImplTest {
     @Test
     void getCategory_parsingError() {
         String errorString = "asdada";
-        assertThrows(YoutubeUtilParsingException.class, () ->
-                underTest.getCategory(errorString));
+        String expected = "Not set";
+        String actual = underTest.getCategory(errorString);
+        assertEquals(expected, actual);
     }
 
     @Test
