@@ -11,6 +11,7 @@ import com.github.he305.streamfeeder.common.exception.ProducerExchangeException;
 import com.github.he305.streamfeeder.common.exception.ProducerExchangeNetworkException;
 import com.github.he305.streamfeeder.common.service.ProducerExchangeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ public class ProducerExchangeServiceV2 implements ProducerExchangeService {
 
     public static final String CHANNEL_POINT = "/stream";
     private final ChannelMapperV2 channelMapper;
+
+    @Qualifier("eurekaRestTemplate")
     private final RestTemplate restTemplate;
     private final AuthorizationExchangeService authorizationExchangeService;
     @Value("${producer-api.v2.base_url:default}")

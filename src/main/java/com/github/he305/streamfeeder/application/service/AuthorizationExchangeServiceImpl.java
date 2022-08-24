@@ -7,6 +7,7 @@ import com.github.he305.streamfeeder.application.dto.v2.RegisterServiceRequestDt
 import com.github.he305.streamfeeder.common.exception.ProducerExchangeNetworkException;
 import com.github.he305.streamfeeder.common.exception.ProducerExchangeNetworkNullResponseException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 public class AuthorizationExchangeServiceImpl implements AuthorizationExchangeService {
 
     public static final String AUTH_POINT = "/auth";
+    @Qualifier("eurekaRestTemplate")
     private final RestTemplate restTemplate;
     @Value("${producer-api.v2.base_url:default}")
     public String baseUrl;
