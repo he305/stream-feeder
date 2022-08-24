@@ -53,7 +53,7 @@ class YoutubeParserUtilsImplTest {
     @Test
     void getTitle() {
         String titlePart = getHtml();
-        String expected = "【 Minecraft】おばけ屋敷がんばりまっする～！【ホロライブ/さくらみこ】";
+        String expected = "Minecraft migo";
         String actual = underTest.getTitle(titlePart);
         assertEquals(expected, actual);
     }
