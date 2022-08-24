@@ -1,14 +1,23 @@
 spring:
+  application:
+    name: stream-feeder
   config:
     import: optional:file:.env[.properties]
 
 producer-api:
   v1: http://127.0.0.1:8080
   v2:
-    base_url: ${content-core-base-url:http://127.0.0.1:8081/api}
+    base_url: ${content-core-base-url:http://CORE/api}
     username: streamer-feeder
     password: streamer-feeder-password
     service-register-key: exampleserviceregisterkey
 
 scheduler:
   delay: 60000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_HOST:http://localhost:9000/eureka}
+  instance:
+    instance-id: stream-feeder-instance-${random.uuid}
