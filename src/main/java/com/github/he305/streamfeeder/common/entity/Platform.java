@@ -4,5 +4,6 @@ public enum Platform {
     TWITCH,
     GOODGAME,
     WASD,
-    YOUTUBE
+    YOUTUBE,
+    VKPLAY
 }
