@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: stream-feeder
+  zipkin:
+    baseUrl: ${ZIPKIN_HOST:http://localhost:9411/}
   config:
     import: optional:file:.env[.properties]
 
